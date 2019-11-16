@@ -1,0 +1,68 @@
+[1mdiff --git a/app/controllers/tasks_controller.rb b/app/controllers/tasks_controller.rb[m
+[1mindex 87bb1d8..7a977e2 100644[m
+[1m--- a/app/controllers/tasks_controller.rb[m
+[1m+++ b/app/controllers/tasks_controller.rb[m
+[36m@@ -44,6 +44,12 @@[m [mclass TasksController < ApplicationController[m
+     @task.destroy[m
+ [m
+     flash[:success] = 'Task は正常に削除されました'[m
+[31m-    redirect_to messages_url[m
+[32m+[m[32m    redirect_to tasks_url[m
+   end[m
+ end[m
+[32m+[m
+[32m+[m[32mprivate[m
+[32m+[m
+[32m+[m[32mdef task_params[m
+[32m+[m[32m  params.require(:task).permit(:content)[m
+[32m+[m[32mend[m
+[1mdiff --git a/app/views/layouts/application.html.erb b/app/views/layouts/application.html.erb[m
+[1mindex 088e252..d9fe637 100644[m
+[1m--- a/app/views/layouts/application.html.erb[m
+[1m+++ b/app/views/layouts/application.html.erb[m
+[36m@@ -11,7 +11,7 @@[m
+ [m
+   <body>[m
+     <div class="container">[m
+[31m-      <%= renber 'layouts/flash_tasks' %>[m
+[32m+[m[32m      <%= render 'layouts/flash_tasks' %>[m
+       [m
+       <%= yield %>[m
+     </div>[m
+[1mdiff --git a/app/views/tasks/index.html.erb b/app/views/tasks/index.html.erb[m
+[1mindex ea807c1..4305cec 100644[m
+[1m--- a/app/views/tasks/index.html.erb[m
+[1m+++ b/app/views/tasks/index.html.erb[m
+[36m@@ -2,7 +2,7 @@[m
+ [m
+ <ul>[m
+   <% @tasks.each do |task| %>[m
+[31m-    <li><%= link_to task.id task %> : <%= task.content %></li>[m
+[32m+[m[32m    <li><%= link_to task.id, task %> : <%= task.content %></li>[m
+   <% end %>[m
+ </ul>[m
+ [m
+[1mdiff --git a/app/views/tasks/show.html.erb b/app/views/tasks/show.html.erb[m
+[1mindex b45eec3..03cdf74 100644[m
+[1m--- a/app/views/tasks/show.html.erb[m
+[1m+++ b/app/views/tasks/show.html.erb[m
+[36m@@ -4,4 +4,4 @@[m
+ [m
+ <%= link_to '一覧に戻る', tasks_path %>[m
+ <%= link_to 'このタスクを編集する', edit_task_path(@task) %>[m
+[31m-<%= link_to 'このメッセージを削除する', @task, method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %>[m
+\ No newline at end of file[m
+[32m+[m[32m<%= link_to 'このタスクを削除する', @task, method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %>[m
+\ No newline at end of file[m
+[1mdiff --git a/config/routes.rb b/config/routes.rb[m
+[1mindex 17f1803..536dbc7 100644[m
+[1m--- a/config/routes.rb[m
+[1m+++ b/config/routes.rb[m
+[36m@@ -1,5 +1,5 @@[m
+ Rails.application.routes.draw do[m
+   root to: 'tasks#index'[m
+   [m
+[31m-  resources :tasks, except: [:index][m
+[32m+[m[32m  resources :tasks[m
+ end[m
+\ No newline at end of file[m
