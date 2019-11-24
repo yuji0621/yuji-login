@@ -2,5 +2,5 @@ Rails.application.routes.draw do
   root to: 'toppages#index'
   
   get 'signup', to: 'users#new'
-  resources :tasks, only: [:index, :show, :new, :create]
+  resources :users, only: [:new, :create]
 end
